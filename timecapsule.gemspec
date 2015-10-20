@@ -4,10 +4,10 @@ require "timecapsule/version"
 Gem::Specification.new do |s|
   s.name        = "timecapsule"
   s.version     = Timecapsule::VERSION
-  s.authors     = ["Renée De Voursney"]
-  s.description = "Great for creating seed data from data entered through your app's ui or the console"
-  s.email       = "renee.devoursney@gmail.com"
-  s.homepage    = "http://github.com/reneedv/timecapsule"
+  s.authors     = ["Renée Hendricksen", "Kerri Miller", "Risa Batta"]
+  s.description = "Great for creating seed data from data entered through your app's UI or the console"
+  s.email       = "robots@nird.us"
+  s.homepage    = "https://github.com/nirds/timecapsule"
   s.license     = "MIT"
   s.summary     = "gem for importing and exporting ActiveRecord data."
 
@@ -20,6 +20,4 @@ Gem::Specification.new do |s|
   s.executables   = `git ls-files -- bin/*`.split("\n").map{ |f| File.basename(f) }
   s.require_paths = ["lib"]
 
-
 end
-
