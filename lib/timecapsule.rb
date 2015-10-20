@@ -1,8 +1,8 @@
 require 'timecapsule/railtie' if defined?(Rails)
 class Timecapsule
-  
+
   require 'csv'
-  
+
   def self.import_model(model_import, file_name=nil)
     file_name ||= Rails.root.join("#{IMPORT_DIR}$#{model_import.to_s.pluralize.underscore}.csv")
     puts "Importing: #{model_import} from #{file_name}"
@@ -17,7 +17,7 @@ class Timecapsule
       object.save(:validate => false)
     end
   end
-  
+
   def self.import
     @csv_files = Dir.glob("#{IMPORT_DIR}*.csv").sort
     @csv_files.each do |file|
@@ -31,18 +31,21 @@ class Timecapsule
       end
     end
   end
-  
+
   def self.export_model(model_export, order=nil, attributes=nil, import_model_name=nil)
     import_model_name ||= model_export
 
     Timecapsule.check_for_and_make_directory(EXPORT_DIR)
+
     puts "Exporting: #{model_export} to #{EXPORT_DIR}#{order.to_s}$#{import_model_name.to_s.pluralize.underscore}.csv"
+
     @file = File.open("#{EXPORT_DIR}#{order.to_s}$#{import_model_name.to_s.pluralize.underscore}.csv", "w")
-    
+
     column_names = attributes.sort.map{|a| a[1]} if attributes
     column_names ||= model_export.column_names.sort
 
     @file.puts column_names.join(",")
+
     model_export.all.each do |item|
       attrib = {}
       if attributes
@@ -54,10 +57,11 @@ class Timecapsule
       end
 
       @file.puts attrib.sort.collect{|k,v| "#{Timecapsule.output(v)}"}.join(",")
-      end
+    end
+
     @file.close
   end
-  
+
   def self.output(value)
     if value.is_a?(String)
       return value.gsub(",",'')
