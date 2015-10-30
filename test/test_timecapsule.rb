@@ -1,14 +1,13 @@
 require 'helper'
 
 class TestTimecapsule < Test::Unit::TestCase
-  
   def cleanup!
     cleanup_db!
     system "rm -rf #{Pathname.new(Timecapsule::EXPORT_DIR).parent}"
     system "rm -rf #{Timecapsule::EXPORT_DIR}"
-    system "rm -rf #{Rails.root.join("config")}"
+    system "rm -rf #{Rails.root.join('config')}"
   end
-  
+
   def cleanup_db!
     User.destroy_all
     Post.destroy_all
@@ -17,15 +16,15 @@ class TestTimecapsule < Test::Unit::TestCase
     Post.reset_pk_sequence
     Name.reset_pk_sequence
   end
-  
-  should "export a model" do
-     Timecapsule.export_model(User)
-     assert_equal true, File.exists?("#{Timecapsule::EXPORT_DIR}#{User.to_s.pluralize.underscore}.csv")
-     cleanup!
+
+  should 'export a model' do
+    Timecapsule.export_model(User)
+    assert_equal true, File.exist?("#{Timecapsule::EXPORT_DIR}#{User.to_s.pluralize.underscore}.csv")
+    cleanup!
   end
-  
-  should "import a model" do
-    User.create!(:first_name => 'test', :last_name => 'tester')
+
+  should 'import a model' do
+    User.create!(first_name: 'test', last_name: 'tester')
     assert_equal 1, User.count
     Timecapsule.export_model(User)
     cleanup_db!
@@ -35,10 +34,10 @@ class TestTimecapsule < Test::Unit::TestCase
     assert_equal 'test', User.first.first_name
     cleanup!
   end
-  
-  should "import all the models" do
-    u = User.create!(:first_name => 'test', :last_name => 'tester')
-    Post.create!(:title => 'Test Post', :body => 'I like to test my gems!', :user => u)
+
+  should 'import all the models' do
+    u = User.create!(first_name: 'test', last_name: 'tester')
+    Post.create!(title: 'Test Post', body: 'I like to test my gems!', user: u)
     assert_equal User.first, Post.first.user
     assert_equal 1, User.count
     assert_equal 1, Post.count
@@ -56,15 +55,14 @@ class TestTimecapsule < Test::Unit::TestCase
     cleanup!
   end
 
-  should "export part of a model" do
-    u = User.create!(:first_name => 'test', :last_name => 'tester')
-    Timecapsule.export_model(User,nil,{first_name: :name, last_name: :other_name},'name')
+  should 'export part of a model' do
+    u = User.create!(first_name: 'test', last_name: 'tester')
+    Timecapsule.export_model(User, nil, { first_name: :name, last_name: :other_name }, 'name')
     cleanup_db!
-    assert_equal true, File.exists?("#{Timecapsule::EXPORT_DIR}#{'name'.to_s.pluralize.underscore}.csv")
+    assert_equal true, File.exist?("#{Timecapsule::EXPORT_DIR}#{'name'.to_s.pluralize.underscore}.csv")
     Timecapsule.import
     assert_equal 1, Name.count
     assert_equal 'test', Name.first.name
     cleanup!
   end
-
 end

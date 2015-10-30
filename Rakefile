@@ -11,11 +11,11 @@ begin
   Bundler.setup(:default, :development)
 rescue Bundler::BundlerError => e
   $stderr.puts e.message
-  $stderr.puts "Run `bundle install` to install missing gems"
+  $stderr.puts 'Run `bundle install` to install missing gems'
   exit e.status_code
 end
 
-task :default => :test
+task default: :test
 
 Bundler::GemHelper.install_tasks
 
@@ -26,7 +26,7 @@ Rake::TestTask.new(:test) do |test|
 end
 
 Rake::RDocTask.new do |rdoc|
-  version = File.exist?('VERSION') ? File.read('VERSION') : ""
+  version = File.exist?('VERSION') ? File.read('VERSION') : ''
 
   rdoc.rdoc_dir = 'rdoc'
   rdoc.title = "timecapsule #{version}"
