@@ -4,7 +4,7 @@ class Timecapsule
   require 'csv'
 
   def self.import_model(model_import, file_name=nil)
-    file_name ||= Rails.root.join("#{IMPORT_DIR}$#{model_import.to_s.pluralize.underscore}.csv")
+    file_name ||= Rails.root.join("#{IMPORT_DIR}#{model_import.to_s.pluralize.underscore}.csv")
     puts "Importing: #{model_import} from #{file_name}"
     csv = CSV.read(file_name)
     attributes = csv.shift
@@ -21,11 +21,7 @@ class Timecapsule
   def self.import
     @csv_files = Dir.glob("#{IMPORT_DIR}*.csv").sort
     @csv_files.each do |file|
-      if file.include?('$')
-        model_name = file.split('$').last.split('.').first.classify.constantize
-      else
-        model_name = file.split('/').last.split('.').first.classify.constantize
-      end
+      model_name = file.split('/').last.split('.').first.split('-').first.classify.constantize
       if model_name.count == 0
         Timecapsule.import_model(model_name, file)
       end
@@ -37,9 +33,15 @@ class Timecapsule
 
     Timecapsule.check_for_and_make_directory(EXPORT_DIR)
 
-    puts "Exporting: #{model_export} to #{EXPORT_DIR}#{order.to_s}$#{import_model_name.to_s.pluralize.underscore}.csv"
+    if order == nil
+      file_name = "#{EXPORT_DIR}#{import_model_name.to_s.pluralize.underscore}.csv"
+    else
+      file_name = "#{EXPORT_DIR}#{import_model_name.to_s.pluralize.underscore}-#{order.to_s}.csv"
+    end
+    
+    puts "Exporting: #{model_export} to #{file_name}"
 
-    @file = File.open("#{EXPORT_DIR}#{order.to_s}$#{import_model_name.to_s.pluralize.underscore}.csv", "w")
+    @file = File.open(file_name, "w")
 
     column_names = attributes.sort.map{|a| a[1]} if attributes
     column_names ||= model_export.column_names.sort
