@@ -51,28 +51,38 @@ class Timecapsule
         attrib = item.attributes
       end
 
-      @file.puts attrib.sort.collect { |_k, v| "#{output(v)}" }.join(',')
+      @file.puts attrib.sort.collect { |_k, v| "#{delete_commas(v)}" }.join(',')
     end
 
     @file.close
   end
 
   private
+    def self.check_for_and_make_directory(path)
+      return true if File.exist?(path)
 
-  def self.output(value)
-    return value.delete(',') if value.is_a?(String)
-    value
-  end
+      path = Pathname.new(path)
+      parent = path.parent
 
-  def self.build_model_name(file)
-    file.split('/').last.split('.').first.split('-').first.classify.constantize
-  end
+      check_for_and_make_directory(parent) unless path.parent.parent.root?
 
-  def self.build_file_name(import_model_name, order)
-    if order.nil?
-      "#{EXPORT_DIR}#{import_model_name.to_s.pluralize.underscore}.csv"
-    else
-      "#{EXPORT_DIR}#{import_model_name.to_s.pluralize.underscore}-#{order}.csv"
+      Dir.mkdir(path) unless File.exist?(path)
     end
-  end
+
+    def self.delete_commas(value)
+      return value.delete(',') if value.is_a?(String)
+      value
+    end
+
+    def self.build_model_name(file)
+      file.split('/').last.split('.').first.split('-').first.classify.constantize
+    end
+
+    def self.build_file_name(import_model_name, order)
+      if order.nil?
+        "#{EXPORT_DIR}#{import_model_name.to_s.pluralize.underscore}.csv"
+      else
+        "#{EXPORT_DIR}#{import_model_name.to_s.pluralize.underscore}-#{order}.csv"
+      end
+    end
 end
