@@ -20,7 +20,7 @@ class TestTimecapsule < Test::Unit::TestCase
   
   should "export a model" do
      Timecapsule.export_model(User)
-     assert_equal true, File.exists?("#{Timecapsule::EXPORT_DIR}$#{User.to_s.pluralize.underscore}.csv")
+     assert_equal true, File.exists?("#{Timecapsule::EXPORT_DIR}#{User.to_s.pluralize.underscore}.csv")
      cleanup!
   end
   
@@ -60,7 +60,7 @@ class TestTimecapsule < Test::Unit::TestCase
     u = User.create!(:first_name => 'test', :last_name => 'tester')
     Timecapsule.export_model(User,nil,{first_name: :name, last_name: :other_name},'name')
     cleanup_db!
-    assert_equal true, File.exists?("#{Timecapsule::EXPORT_DIR}$#{'name'.to_s.pluralize.underscore}.csv")
+    assert_equal true, File.exists?("#{Timecapsule::EXPORT_DIR}#{'name'.to_s.pluralize.underscore}.csv")
     Timecapsule.import
     assert_equal 1, Name.count
     assert_equal 'test', Name.first.name
