@@ -2,7 +2,7 @@
 
 require 'bundler'
 require 'rake'
-require 'rake/testtask'
+require 'rspec/core/rake_task'
 require 'rdoc/task'
 require 'rubygems'
 require 'thread'
@@ -15,15 +15,11 @@ rescue Bundler::BundlerError => e
   exit e.status_code
 end
 
-task default: :test
+RSpec::Core::RakeTask.new(:spec)
+
+task default: :spec
 
 Bundler::GemHelper.install_tasks
-
-Rake::TestTask.new(:test) do |test|
-  test.libs << 'lib' << 'test'
-  test.pattern = 'test/**/test_*.rb'
-  test.verbose = true
-end
 
 Rake::RDocTask.new do |rdoc|
   version = File.exist?('VERSION') ? File.read('VERSION') : ''
