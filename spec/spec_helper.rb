@@ -1,5 +1,4 @@
 require 'rspec'
-require 'byebug'
 require 'timecapsule'
 require 'rails_setup_helper'
 
