@@ -12,4 +12,7 @@ group :development do
   gem 'rdoc'
   gem 'shoulda', '>= 0'
   gem 'sqlite3'
+  gem 'rspec'
+  gem 'byebug'
+  gem 'database_cleaner'
 end

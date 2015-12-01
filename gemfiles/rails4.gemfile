@@ -9,4 +9,6 @@ group :development do
   gem "bundler"
   gem "jeweler", "~> 1.6.4"
   gem "rdoc"
+  gem 'rspec'
+  gem 'database_cleaner'
 end
