@@ -48,8 +48,10 @@ class Timecapsule
           attrib[k] = item[k]
         end
       else
-        attrib = item.attributes
+        attrib = fetch_attributes_for(item)
       end
+
+      next if attrib.nil?
 
       @file.puts attrib.sort.collect { |_k, v| "#{delete_commas(v)}" }.join(',')
     end
@@ -84,5 +86,12 @@ class Timecapsule
       else
         "#{EXPORT_DIR}#{import_model_name.to_s.pluralize.underscore}-#{order}.csv"
       end
+    end
+
+    def self.fetch_attributes_for(item)
+      item.attributes
+    rescue StandardError => e
+      puts "Error! #{item.class.name} - #{item.id}: '#{e}'."
+      return nil
     end
 end
