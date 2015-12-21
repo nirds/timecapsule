@@ -1,7 +1,6 @@
 class Timecapsule
   class Railtie < Rails::Railtie
     config.before_configuration do
-
       default_config = { import_directory: 'db/seed_data/', export_directory: 'db/seed_data/' }
       config_pathname = Rails.root.join('config/timecapsule.yml')
       config_dir_pathname = Rails.root.join('config')

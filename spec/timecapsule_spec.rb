@@ -2,11 +2,7 @@ require 'spec_helper'
 require 'database_cleaner'
 
 describe Timecapsule do
-  it "true is true" do
-    expect(true).to be true
-  end
-  
-  after(:each) do
+    after(:each) do
     system "rm -rf #{Pathname.new(Timecapsule::EXPORT_DIR).parent}"
     system "rm -rf #{Timecapsule::EXPORT_DIR}"
     system "rm -rf #{Rails.root.join('config')}"
@@ -18,8 +14,10 @@ describe Timecapsule do
   end
   
   it 'should export_model part of a model' do
-    u = User.create!(first_name: 'test', last_name: 'tester')
-    Timecapsule.export_model(User, nil, { first_name: :name, last_name: :other_name }, 'name')
+    User.create!(first_name: 'test', last_name: 'tester')
+    Timecapsule.export_model(User, nil,
+                            { first_name: :name, last_name: :other_name },
+                            'name')
   
     expect(File.exist?("#{Timecapsule::EXPORT_DIR}names.csv")).to be true
   end
