@@ -2,7 +2,7 @@
 
 ![Gem Version](https://badge.fury.io/rb/timecapsule.png)
 ![Build Status](https://travis-ci.org/nirds/timecapsule.png?branch=master)
-![CodeClimate](https://codeclimate.com/github/reneedv/timecapsule.png)
+[![Code Climate](https://codeclimate.com/github/nirds/timecapsule/badges/gpa.svg)](https://codeclimate.com/github/nirds/timecapsule)
 
 Gem for importing and exporting ActiveRecord data as CSV files.
 Great for creating seed data from data entered through your app's UI or the console.
